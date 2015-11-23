@@ -22,6 +22,10 @@ extra-source-files:
     phadej.png
     README.md
 
+Flag example
+  Description: Build the example application.
+  Default:     False
+
 source-repository head
   type: git
   location: https://github.com/axman6/friday-scale-dct.git
@@ -43,20 +47,25 @@ library
 
 executable example
   -- type: exitcode-stdio-1.0
+  if !flag(example)
+    buildable: False
+  if flag(example)
+    buildable: True
+    build-depends:
+        base        >=4.7      && <4.9
+      , base-compat >=0.6.0    && <0.9
+      , JuicyPixels >=3.2.5.3  && <3.3
+      , fft         >=0.1.8.1  && <0.2
+      , carray      >=0.1.6.1  && <0.2
+      , base
+      , friday-juicypixels >= 0.1 && < 0.2
+      , JuicyPixels >=3.2.5.3  && <3.3
+      , friday-scale-dct
+      , JuicyPixels-util      >=0.2   && <0.3
+      , time                  >=1.4.2 && <1.6
+
   main-is: Example.hs
   hs-source-dirs:
       example
   ghc-options: -Wall
-  build-depends:
-      base        >=4.7      && <4.9
-    , base-compat >=0.6.0    && <0.9
-    , JuicyPixels >=3.2.5.3  && <3.3
-    , fft         >=0.1.8.1  && <0.2
-    , carray      >=0.1.6.1  && <0.2
-    , base
-    , friday-juicypixels >= 0.1 && < 0.2
-    , JuicyPixels >=3.2.5.3  && <3.3
-    , friday-scale-dct
-    , JuicyPixels-util      >=0.2   && <0.3
-    , time                  >=1.4.2 && <1.6
   default-language: Haskell2010

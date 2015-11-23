@@ -36,8 +36,8 @@ type Array2D = CArray (Int, Int) Double
 
 
 {-# INLINE scale #-}
-{-# SPECIALIZE scale :: (Int,Int) -> Manifest RGBAPixel -> Manifest RGBAPixel #-}
-{-# SPECIALIZE scale :: (Int,Int) -> Manifest RGBPixel -> Manifest RGBPixel #-}
+-- {-# SPECIALIZE scale :: (Int,Int) -> Manifest RGBAPixel -> Manifest RGBAPixel #-}
+-- {-# SPECIALIZE scale :: (Int,Int) -> Manifest RGBPixel -> Manifest RGBPixel #-}
 scale :: ( ImagePixel i ~ pix
           , PixelChannel pix ~ pixChan
           , Integral pixChan
