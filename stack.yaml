@@ -1,1 +1,12 @@
-stack-lts-2.yaml
+resolver: lts-3.12
+packages:
+- '.'
+extra-deps:
+- carray-0.1.6.1
+- fft-0.1.8.1
+- ix-shapable-0.1.0
+- friday-0.2.2.0
+- ratio-int-0.1.2
+- friday-juicypixels-0.1.0.2
+- JuicyPixels-util-0.2
+
