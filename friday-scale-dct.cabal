@@ -3,7 +3,7 @@
 -- see: https://github.com/sol/hpack
 
 name:           friday-scale-dct
-version:        0.1.1.0
+version:        1.0.0.0
 synopsis:       Scale Friday images with DCT
 description:    Scale Friday Images with DCT
 category:       Graphics
@@ -58,9 +58,10 @@ executable example
       , fft         >=0.1.8.1  && <0.2
       , carray      >=0.1.6.1  && <0.2
       , base
-      , friday-juicypixels >= 0.1 && < 0.2
-      , JuicyPixels >=3.2.5.3  && <3.3
+      , friday
       , friday-scale-dct
+      , friday-juicypixels    >= 0.1 && < 0.2
+      , JuicyPixels           >=3.2.5.3  && <3.3
       , JuicyPixels-util      >=0.2   && <0.3
       , time                  >=1.4.2 && <1.6
 
