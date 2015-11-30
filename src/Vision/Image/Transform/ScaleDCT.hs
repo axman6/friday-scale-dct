@@ -1,7 +1,6 @@
 {-# LANGUAGE BangPatterns        #-}
 {-# LANGUAGE FlexibleContexts    #-}
 {-# LANGUAGE GADTs               #-}
-{-# LANGUAGE RankNTypes          #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 -----------------------------------------------------------------------------
 -- |
@@ -20,9 +19,6 @@ import           Prelude.Compat
 import           Data.Array.CArray.Base (CArray (..))
 import qualified Data.Vector.Storable   as VS
 import           Vision.Image           hiding ((!))
-                                        -- (Delayed (..), FromFunction (..), Image,
-                                        --  ImagePixel, Manifest (..),
-                                        --  RGBAPixel (..), compute, index, shape)
 import           Vision.Primitive.Shape
 
 import           Data.Array.CArray      (amap, array, bounds, elems, size, (!))
@@ -35,19 +31,40 @@ import qualified Data.Vector            as V
 type Array2D = CArray (Int, Int) Double
 
 
-{-# INLINE scale #-}
+-- | @`scale' (w,h) img@ scales the image @img@ to size @w * h@.
+-- It is unlikely to do the right thing for "non-linear" colour spaces, such as HSV, where hue is an angle.
+-- In future versions there may be a class to restrict this function to only working on "linear" pixel types.
+--
+-- @pix@ is the type of pixels in the image (see `ImagePixel'),
+-- @pixChan@ is the underlying (Integral) pixel component type, ie `Word8`, `Word16` (see `PixelChannel').
+-- Future versions will support scaling floating point images with `Float' and `Double' channels.
+--
+-- Example types for this function:
+--
+-- > scale :: (Int,Int) -> Manifest RGBAPixel -> Manifest RGBAPixel
+-- > scale :: (Int,Int) -> Delayed RGBPixel -> Manifest RGBPixel
+--
+--
+-- Here @pix@ is, for example, 'RGBAPixel', with @pixChan@ being 'Word8'
+--
+-- Some assumptions are made about the @pix@ type, particularly that if @pix@
+-- is made up of channels of type @pixChan@, then they are stored directly next to
+-- each other by @pix@'s `Storable' instance. If this is not the case, then the
+-- resulting image may produce garbage results. This should not be an issue for all
+-- of the @friday@ pixel types.
+{-# INLINEABLE scale #-}
 -- {-# SPECIALIZE scale :: (Int,Int) -> Manifest RGBAPixel -> Manifest RGBAPixel #-}
 -- {-# SPECIALIZE scale :: (Int,Int) -> Manifest RGBPixel -> Manifest RGBPixel #-}
-scale :: ( ImagePixel i ~ pix
-          , PixelChannel pix ~ pixChan
-          , Integral pixChan
-          , Pixel pix
-          , VS.Storable pixChan
-          , Image i)
+scale ::
+    ( ImagePixel i ~ pix
+    , PixelChannel pix ~ pixChan
+    , Integral pixChan
+    , Pixel pix
+    , VS.Storable pixChan
+    , Image i)
       => (Int, Int)         -- ^ Output width, height
       -> i                  -- ^ Input image
       -> Manifest (ImagePixel i) -- ^ Output image
--- scale :: (Int,Int) -> Manifest RGBAPixel -> Manifest RGBAPixel
 scale dim@(w,h) img = Manifest (Z :. w :. h) res'
   where
 
@@ -127,23 +144,3 @@ limit :: Double -> Double
 limit x | x < 0     = 0
         | x > 255   = 255
         | otherwise = x
-
--- -- From 'Control.Lens.Lens' from 'lens' package
--- toListOf :: Traversal s s a a -> s -> [a]
--- toListOf l = foldrOf l (:) []
--- {-# INLINE toListOf #-}
-
--- foldrOf :: Traversal s s a a -> (a -> r -> r) -> r -> s -> r
--- foldrOf l f z = flip appEndo z . foldMapOf l (Endo #. f)
--- {-# INLINE foldrOf #-}
-
--- foldMapOf :: Monoid r => Traversal s s a a -> (a -> r) -> s -> r
--- foldMapOf l f = getConst #. l (Const #. f)
--- {-# INLINE foldMapOf #-}
-
--- (#.) :: Coercible c b => (b -> c) -> (a -> b) -> a -> c
--- (#.) _ = coerce (\x -> x :: b) :: forall a b. Coercible b a => a -> b
--- {-# INLINE (#.) #-}
-
---(.#) :: Coercible b a => (b -> c) -> (a -> b) -> a -> c
---(.#) pbc _ = coerce pbc
