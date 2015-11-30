@@ -3,7 +3,7 @@
 -- see: https://github.com/sol/hpack
 
 name:           friday-scale-dct
-version:        1.0.0.0
+version:        1.0.0.1
 synopsis:       Scale Friday images with DCT
 description:    Scale Friday Images with DCT
 category:       Graphics
