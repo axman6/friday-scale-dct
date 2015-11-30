@@ -19,12 +19,12 @@ for manipulating images in a functional way.
 
 ## Example image
 
-![phadej](https://raw.githubusercontent.com/phadej/JuicyPixels-scale-dct/master/phadej.png)
+![phadej](https://raw.githubusercontent.com/axman6/friday-scale-dct/master/phadej.png)
 
 ### smaller
 
-![phadej](https://raw.githubusercontent.com/phadej/JuicyPixels-scale-dct/master/phadej-small.png)
+![phadej](https://raw.githubusercontent.com/axman6/friday-scale-dct/master/phadej-small.png)
 
 ### larger
 
-![phadej](https://raw.githubusercontent.com/phadej/JuicyPixels-scale-dct/master/phadej-large.png)
+![phadej](https://raw.githubusercontent.com/axman6/friday-scale-dct/master/phadej-large.png)
